@@ -4,12 +4,18 @@ namespace App\Controller;
 
 use App\Entity\Employee;
 use App\Repository\EmployeeRepository;
-use Doctrine\ORM\EntityManager;
+// use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+// use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+// use Symfony\Component\Serializer\Encoder\JsonEncoder;
+// use Symfony\Component\Serializer\Encoder\XmlEncoder;
+// use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+// use Symfony\Component\Serializer\Serializer;
+
 
 
 class EmployeeController extends AbstractController
@@ -29,6 +35,7 @@ class EmployeeController extends AbstractController
     {
         $employee = $this->employeeRepository->findAll();
         // dd($employee);
+        // $jsonContent = $employee->serialize($employee,'json');
 
 
         if(!$employee){
@@ -40,11 +47,15 @@ class EmployeeController extends AbstractController
                 'name'=> $em->getName(),
                 'Contact' => $em->getContact(),
                 'Address'=>  $em->getAddress() ,
-                'salary'=>  $em->getSalary(),
+                // 'salary'=>  $em->getSalary(),
                 'Designation' => $em->getDesignation()
             ];
         }
+        
+        // dd(json_encode($employee));
+
         return $this->json($data);
+        // return new JsonResponse($data);
     }
 
 
@@ -62,7 +73,7 @@ class EmployeeController extends AbstractController
                 'name'=> $em->getName(),
                 'Contact' => $em->getContact(),
                 'Address'=>  $em->getAddress() ,
-                'salary'=>  $em->getSalary(),
+                // 'salary'=>  $em->getSalary(),
                 'Designation' => $em->getDesignation()
             ];
         
@@ -79,7 +90,7 @@ class EmployeeController extends AbstractController
          $employee->setName($para['name'])
          ->setContact($para['Contact'])
          ->setAddress($para['Address'])
-         ->setSalary($para['salary'])
+        //  ->setSalary($para['salary'])
          ->setDesignation($para['Designation']);
 
         $this->emp->persist($employee);
@@ -124,7 +135,7 @@ class EmployeeController extends AbstractController
          $em->setName($para['name'])
          ->setContact($para['Contact'])
          ->setAddress($para['Address'])
-         ->setSalary($para['salary'])
+        //  ->setSalary($para['salary'])
          ->setDesignation($para['Designation']);
 
         $this->emp->persist($em);

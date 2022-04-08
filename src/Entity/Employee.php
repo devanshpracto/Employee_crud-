@@ -22,11 +22,17 @@ class Employee
     #[ORM\Column(type: 'text')]
     private $Address;
 
-    #[ORM\Column(type: 'integer')]
-    private $salary;
+    // #[ORM\Column(type: 'integer')]
+    // private $salary;
 
     #[ORM\Column(type: 'string', length: 255)]
     private $Designation;
+
+    #[ORM\OneToOne(mappedBy: 'Employee', targetEntity: Salary::class, cascade: ['persist', 'remove'])]
+    private $salary;
+
+    #[ORM\ManyToOne(targetEntity: Department::class)]
+    private $Department;
 
     public function getId(): ?int
     {
@@ -69,17 +75,17 @@ class Employee
         return $this;
     }
 
-    public function getSalary(): ?int
-    {
-        return $this->salary;
-    }
+    // public function getSalary(): ?int
+    // {
+    //     return $this->salary;
+    // }
 
-    public function setSalary(int $salary): self
-    {
-        $this->salary = $salary;
+    // public function setSalary(int $salary): self
+    // {
+    //     $this->salary = $salary;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getDesignation(): ?string
     {
@@ -89,6 +95,35 @@ class Employee
     public function setDesignation(string $Designation): self
     {
         $this->Designation = $Designation;
+
+        return $this;
+    }
+
+    public function getSalary(): ?Salary
+    {
+        return $this->salary;
+    }
+
+    public function setSalary(Salary $salary): self
+    {
+        // set the owning side of the relation if necessary
+        if ($salary->getEmployee() !== $this) {
+            $salary->setEmployee($this);
+        }
+
+        $this->salary = $salary;
+
+        return $this;
+    }
+
+    public function getDepartment(): ?Department
+    {
+        return $this->Department;
+    }
+
+    public function setDepartment(?Department $Department): self
+    {
+        $this->Department = $Department;
 
         return $this;
     }
