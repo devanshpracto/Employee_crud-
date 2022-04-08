@@ -47,7 +47,7 @@ class SalaryRepository extends ServiceEntityRepository
 
     // /**
     //  * @return Salary[] Returns an array of Salary objects
-    //  */git 
+    //  */
     /*
     public function findByExampleField($value)
     {
