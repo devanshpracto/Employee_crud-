@@ -24,7 +24,7 @@ class EmployeeController extends AbstractController
 
 
     #[Route('/employee', name: 'app_employee',methods:'GET')]
-    public function get_Employee() : Response
+    public function index() : Response
     {
 
         return $this->employeeRepository->getAllEntries();
@@ -76,6 +76,6 @@ class EmployeeController extends AbstractController
     public function update(Request $request,$id) : Response
     {
       
-        return $this->employeeRepository->createEntry($request);
+        return $this->employeeRepository->updateEntry($request,$id);
     }
 }
