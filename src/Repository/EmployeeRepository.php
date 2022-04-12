@@ -6,7 +6,13 @@ use App\Entity\Employee;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 
 /**
  * @method Employee|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,9 +22,16 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class EmployeeRepository extends ServiceEntityRepository
 {
+    private $propertyInfo;
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Employee::class);
+        $reflectionExtractor = new ReflectionExtractor();
+        $listExtractors = [$reflectionExtractor];
+        $propertyInfo = new PropertyInfoExtractor(
+            $listExtractors
+        );
+       
     }
 
     /**
@@ -27,6 +40,8 @@ class EmployeeRepository extends ServiceEntityRepository
      */
     public function add(Employee $entity, bool $flush = true): void
     {
+
+        
         $this->_em->persist($entity);
         if ($flush) {
             $this->_em->flush();
@@ -44,6 +59,133 @@ class EmployeeRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function getAllEntries() : Response
+    {
+        $employee = $this->findAll();
+
+        // if(!$employee){
+        //     $response = new Response('No Entry Exists', Response::HTTP_NOT_FOUND);
+
+        //     return $response;
+        // }
+        $data = [];
+        foreach($employee as $em){
+            $data[]=[
+                'id'=> $em->getId(),
+                'name'=> $em->getName(),
+                'Contact' => $em->getContact(),
+                'Address'=>  $em->getAddress() ,
+                'salary' =>  $em->getSalary(),
+                'Designation' => $em->getDesignation()
+            ];
+        }
+        
+        // dd(json_encode($employee));
+        $response = new Response(json_encode($data), Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
+    }
+
+
+    /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function createEntry(Request $request): Response
+    {
+        $para = json_decode($request->getContent(),true);
+        $employee = new Employee;
+      
+
+        $employee->setName($para['name'])
+        ->setContact($para['Contact'])
+        ->setAddress($para['Address'])
+        ->setDesignation($para['Designation']);
+        
+
+        $columns =  $this->_em->getClassMetadata(Employee::class)->getColumnNames();
+       foreach($para as $key => $value){
+           if(!in_array(strtolower($key),$columns)){
+           return  new Response($key." does not exist in our entity::Employee", Response::HTTP_NOT_ACCEPTABLE);
+           }
+       }
+          $this->add($employee);
+        
+          $response = new Response("Inserted Successfully", Response::HTTP_OK);
+          $response->headers->set('Content-Type', 'application/json');
+          return $response;
+
+    }
+     /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+
+    public function updateEntry(Request $request,int $id): Response
+    {
+        $para = json_decode($request->getContent(),true);
+
+        $em = $this->find($id);
+        
+        if(!$em){
+            return  new Response("No entry for given id exists", Response::HTTP_NOT_FOUND);
+        }
+
+         $em->setName($para['name'])
+         ->setContact($para['Contact'])
+         ->setAddress($para['Address'])
+         ->setDesignation($para['Designation']);
+
+         $columns =  $this->_em->getClassMetadata(Employee::class)->getColumnNames();
+         foreach($para as $key => $value){
+             if(!in_array(strtolower($key),$columns)){
+             return  new Response($key." does not exist in our entity::Employee", Response::HTTP_NOT_ACCEPTABLE);
+             }
+         }
+
+        $this->add($em);
+                
+          $response = new Response('Updated Successfully', Response::HTTP_OK);
+          $response->headers->set('Content-Type', 'application/json');
+          return $response;
+
+    }
+
+
+ /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function getEntryById(Employee $em) : Response
+    {
+       
+
+        $data=[
+            'id'=> $em->getId(),
+            'name'=> $em->getName(),
+            'Contact' => $em->getContact(),
+            'Address'=>  $em->getAddress(),
+            'Designation' => $em->getDesignation()
+        ];
+    
+      
+        // dd(json_encode($employee));
+        $response = new Response(json_encode($data), Response::HTTP_OK);
+        $response->headers->set('Content-Type', 'application/json');
+
+        return $response;
+
+    }
+
+
+   
 
     // /**
     //  * @return Employee[] Returns an array of Employee objects
