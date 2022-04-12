@@ -128,7 +128,7 @@ class EmployeeRepository extends ServiceEntityRepository
      * @throws OptimisticLockException
      */
 
-    public function updateEntry(Request $request,int $id): Response
+    public function updateEntry(Request $request,$id): Response
     {
         $para = json_decode($request->getContent(),true);
 
