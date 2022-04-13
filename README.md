@@ -16,9 +16,9 @@ To run this project follow these step:
 
 
 
-Note : I have started my server on the port 3307 , yours may be different also the username , password may be different too . 
+Note : I have started my server on the port 3306 , yours may be different also the username , password may be different too . 
 Change these setting in .env file before starting the server 
-DATABASE_URL="mysql://root:root@127.0.0.1:3307/emoployee?serverVersion=mariadb-10.4.21"
+DATABASE_URL="mysql://root:root@127.0.0.1:3306/emoployee?serverVersion=mariadb-10.4.21"
 
 Api Endpoints: 
 
