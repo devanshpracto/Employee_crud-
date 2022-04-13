@@ -22,8 +22,62 @@ DATABASE_URL="mysql://root:root@127.0.0.1:3307/emoployee?serverVersion=mariadb-1
 
 Api Endpoints: 
 
-(To be added soon) 
+(For Employee) :
 
+GET request for getting all employee :
+http://localhost/employee
+
+POST request for create new employee :
+http://localhost/employee
+
+GET request for getting all employee by id  :
+http://localhost/employee/{id}
+
+PUT request for update a employee :
+http://localhost/employee/{id}
+
+PUT request for update a employee :
+http://localhost/employee/salary/{id}
+
+POST request for deleting a employee :
+http://localhost/employee/{id}
+
+
+(For Salary) :
+
+GET request for getting all salary :
+http://localhost/salary
+
+POST request for create new salary :
+http://localhost/salary
+
+GET request for getting all salary by id  :
+http://localhost/salary/{id}
+
+PUT request for update a salary :
+http://localhost/salary/{id}
+
+
+POST request for deleting a salary :
+http://localhost/salary/{id}
+
+(For Department) :
+
+GET request for getting all department :
+http://localhost/department
+
+POST request for create new department :
+http://localhost/department
+
+GET request for getting all department by id  :
+http://localhost/department/{id}
+
+PUT request for update a department :
+http://localhost/department/{id}
+
+
+POST request for deleting a department :
+http://localhost/employee/{id}
 
 
 

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Employee;
+use App\Entity\Salary;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -23,7 +24,8 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 class EmployeeRepository extends ServiceEntityRepository
 {
     private $propertyInfo;
-    public function __construct(ManagerRegistry $registry)
+    private $salaryRepository;
+    public function __construct(SalaryRepository $salaryRepository, ManagerRegistry $registry)
     {
         parent::__construct($registry, Employee::class);
         $reflectionExtractor = new ReflectionExtractor();
@@ -31,6 +33,7 @@ class EmployeeRepository extends ServiceEntityRepository
         $propertyInfo = new PropertyInfoExtractor(
             $listExtractors
         );
+        $this->salaryRepository=$salaryRepository;
        
     }
 
@@ -181,6 +184,44 @@ class EmployeeRepository extends ServiceEntityRepository
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+
+    }
+
+
+     /**
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public function setEmployeeSalary(Request $request,$id): Response
+    {
+        $para = json_decode($request->getContent(),true);
+        $Salary = new Salary;
+        $Salary->setAmount($para['amount']);
+        
+        $employee = $this->find($id);
+        if(!$employee){
+            return  new Response("No employee for given id exist in our entity::Employee", Response::HTTP_NOT_FOUND);
+        }
+        $employee->setSalary($Salary);
+        $Salary->setEmployee($employee);
+
+
+
+        $columns =  $this->_em->getClassMetadata(Salary::class)->getColumnNames();
+        foreach($para as $key => $value){
+            if(!in_array(strtolower($key),$columns)){
+            return  new Response($key." does not exist in our entity::Salary", Response::HTTP_NOT_ACCEPTABLE);
+            }
+        }
+           $this->add($employee);
+           $this->salaryRepository->add($Salary);
+        
+          $response = new Response("Inserted Successfully", Response::HTTP_OK);
+          $response->headers->set('Content-Type', 'application/json');
+          return $response;
+
+
+       
 
     }
 

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Employee;
 use App\Repository\EmployeeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,4 +77,15 @@ class EmployeeController extends AbstractController
       
         return $this->employeeRepository->updateEntry($request,$id);
     }
+    #[Route('/employee/salary/{id}', name: 'app_salary_update',methods:'PUT')]
+    public function salaryUpdate(Request $request,$id) : Response
+    {
+      
+        return $this->employeeRepository->setEmployeeSalary($request,$id);
+    }
+   
+
+
+
+
 }
