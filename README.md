@@ -36,7 +36,7 @@ http://127.0.0.1:8000/employee/{id}
 PUT request for update a employee :
 http://127.0.0.1:8000/employee/{id}
 
-PUT request for update a employee :
+PUT request for update salary of a employee :
 http://127.0.0.1:8000/employee/salary/{id}
 
 DELETE request for deleting a employee :
