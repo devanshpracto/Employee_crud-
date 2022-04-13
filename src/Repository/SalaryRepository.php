@@ -91,12 +91,16 @@ class SalaryRepository extends ServiceEntityRepository
       
 
         $Salary->setAmount($para['amount']);
+
         $employee = new Employee();
         $employee = $this->employeeRepository->find($para['employee']);
         if(!$employee){
             return  new Response("No employee for given id exist in our entity::Employee", Response::HTTP_NOT_FOUND);
         }
+        $employee->setSalary($Salary);
         $Salary->setEmployee($employee);
+        // $em->setEmployee($employee);
+        
 
         $columns =  $this->_em->getClassMetadata(Salary::class)->getColumnNames();
        foreach($para as $key => $value){
@@ -104,6 +108,7 @@ class SalaryRepository extends ServiceEntityRepository
            return  new Response($key." does not exist in our entity::Salary", Response::HTTP_NOT_ACCEPTABLE);
            }
        }
+          $this->employeeRepository->add($employee);
           $this->add($Salary);
         
           $response = new Response("Inserted Successfully", Response::HTTP_OK);
@@ -134,16 +139,17 @@ class SalaryRepository extends ServiceEntityRepository
         if(!$employee){
             return  new Response("No employee for given id exist in our entity::Employee", Response::HTTP_NOT_FOUND);
         }
+        $employee->setSalary($em);
         $em->setEmployee($employee);
-         
-
-         $columns =  $this->_em->getClassMetadata(Salary::class)->getColumnNames();
-         foreach($para as $key => $value){
-             if(!in_array(strtolower($key),$columns)){
-             return  new Response($key." does not exist in our entity::Salary", Response::HTTP_NOT_ACCEPTABLE);
-             }
-         }
-
+        
+        $columns =  $this->_em->getClassMetadata(Salary::class)->getColumnNames();
+        foreach($para as $key => $value){
+            if(!in_array(strtolower($key),$columns)){
+                return  new Response($key." does not exist in our entity::Salary", Response::HTTP_NOT_ACCEPTABLE);
+            }
+        }
+        
+        $this->employeeRepository->add($employee);
         $this->add($em);
                 
           $response = new Response('Updated Successfully', Response::HTTP_OK);
