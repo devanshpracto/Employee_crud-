@@ -25,59 +25,59 @@ Api Endpoints:
 (For Employee) :
 
 GET request for getting all employee :
-http://localhost/employee
+http://127.0.0.1:8000/employee
 
 POST request for create new employee :
-http://localhost/employee
+http://127.0.0.1:8000/employee
 
 GET request for getting all employee by id  :
-http://localhost/employee/{id}
+http://127.0.0.1:8000/employee/{id}
 
 PUT request for update a employee :
-http://localhost/employee/{id}
+http://127.0.0.1:8000/employee/{id}
 
 PUT request for update a employee :
-http://localhost/employee/salary/{id}
+http://127.0.0.1:8000/employee/salary/{id}
 
-POST request for deleting a employee :
-http://localhost/employee/{id}
+DELETE request for deleting a employee :
+http://127.0.0.1:8000/employee/{id}
 
 
 (For Salary) :
 
 GET request for getting all salary :
-http://localhost/salary
+http://127.0.0.1:8000/salary
 
 POST request for create new salary :
-http://localhost/salary
+http://127.0.0.1:8000/salary
 
 GET request for getting all salary by id  :
-http://localhost/salary/{id}
+http://127.0.0.1:8000/salary/{id}
 
 PUT request for update a salary :
-http://localhost/salary/{id}
+http://127.0.0.1:8000/salary/{id}
 
 
-POST request for deleting a salary :
-http://localhost/salary/{id}
+DELETE request for deleting a salary :
+http://127.0.0.1:8000/salary/{id}
 
 (For Department) :
 
 GET request for getting all department :
-http://localhost/department
+http://127.0.0.1:8000/department
 
 POST request for create new department :
-http://localhost/department
+http://127.0.0.1:8000/department
 
 GET request for getting all department by id  :
-http://localhost/department/{id}
+http://127.0.0.1:8000/department/{id}
 
 PUT request for update a department :
-http://localhost/department/{id}
+http://127.0.0.1:8000/department/{id}
 
 
-POST request for deleting a department :
-http://localhost/employee/{id}
+DELETE request for deleting a department :
+http://127.0.0.1:8000/employee/{id}
 
 
 
